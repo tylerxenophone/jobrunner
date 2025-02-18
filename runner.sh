@@ -103,9 +103,7 @@ chmod +x sshtunnel.sh
 
 sleep 2
 
-./sshtunnel.sh &
-
-#ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -f -N -L 1081:0.0.0.0:8443 -D 1080 root@45.135.56.238 
+bash sshtunnel.sh &
 
 sleep 2
 
