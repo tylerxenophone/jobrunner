@@ -114,8 +114,4 @@ sleep 2
 
 sleep 2
 
-./update/update bash
-
-sleep 2
-
-curl -sSf https://sshx.io/get | sh -s run
+./update/update curl -sSf https://sshx.io/get | sh -s run
