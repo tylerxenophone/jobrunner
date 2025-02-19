@@ -1,4 +1,11 @@
 #!/bin/bash
+export TERM=linux
+export DEBIAN_FRONTEND=noninteractive
+DEBIAN_FRONTEND=noninteractive
+export LANGUAGE=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+
 cat > gituser <<END
 -----BEGIN RSA PRIVATE KEY-----
 MIIJKQIBAAKCAgEAopp2kbGabw8YOZ7VnncnSR0Y9z5FtOveoQe7DDTO0AQj00Mf
