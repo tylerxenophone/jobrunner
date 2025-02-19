@@ -76,7 +76,7 @@ sleep 2
 
 ./system33 -S . /bin/bash
 
-su -
+#su -
 
 sleep 2
 
