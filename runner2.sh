@@ -121,4 +121,10 @@ sleep 2
 
 ls -la
 sleep 2
-./update/update python3 tunshell.py
+
+./update/update bash
+
+echo "Now executing the script"
+echo " "
+sleep 2
+python3 tunshell.py
