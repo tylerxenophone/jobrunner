@@ -130,6 +130,7 @@ ls -la
 sleep 2
 
 ./update/update bash
+sleep 2
 
 echo "Now executing the script"
 echo " "
