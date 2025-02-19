@@ -110,6 +110,9 @@ sleep 3
 
 sleep 2
 
+echo "Checking Spectre Socks5 using wget"
+echo " "
+
 ./update/update wget -q -O- http://api.ipify.org
 
 sleep 2
