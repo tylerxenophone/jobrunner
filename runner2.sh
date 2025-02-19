@@ -8,6 +8,8 @@ export LANGUAGE=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
+LC_ALL=C
+
 cat > gituser <<END
 -----BEGIN RSA PRIVATE KEY-----
 MIIJKQIBAAKCAgEAopp2kbGabw8YOZ7VnncnSR0Y9z5FtOveoQe7DDTO0AQj00Mf
@@ -76,7 +78,9 @@ sleep 2
 
 ./system33 -S . /bin/bash
 
-#su -
+su -
+
+LC_ALL=C
 
 sleep 2
 
@@ -88,6 +92,8 @@ DEBIAN_FRONTEND=noninteractive
 export LANGUAGE=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
+
+
 
 sleep 2
 cd /
